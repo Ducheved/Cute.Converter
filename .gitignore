@@ -1,0 +1,5 @@
+# .gitignore
+server/.env
+server/temp/
+server/node_modules/
+server/package-lock.json
