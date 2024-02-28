@@ -1,6 +1,7 @@
 // server/endpoints/main.js
-// API ROUTES
 const imageProcessor = require('../processors/imageProcessor');
+const svgProcessor = require('../processors/svgProcessor');
+
 module.exports = function (fastify, opts, done) {
   fastify.route({
     method: 'POST',
@@ -8,5 +9,11 @@ module.exports = function (fastify, opts, done) {
     handler: imageProcessor.processImage
   });
 
+  fastify.route({
+    method: 'POST',
+    url: '/api/v1/svg/process',
+    handler: svgProcessor.processSvg
+  });
+
   done();
-}
+};
