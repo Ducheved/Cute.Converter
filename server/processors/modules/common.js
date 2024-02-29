@@ -1,4 +1,3 @@
-// server/processors/modules/common.js
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
@@ -106,14 +105,26 @@ module.exports = {
     };
   },
   
+  // sendResponseAndDeleteTempFiles: function(reply, outputFormat, result, outputBuffer, inputPath, outputPath) {
+  //   try {
+  //     fs.unlinkSync(inputPath);
+  //     fs.unlinkSync(outputPath);
+  //   } finally {
+  //     reply
+  //       .header('Content-Type', `image/${outputFormat}`)
+  //       .header('X-Image-Data', JSON.stringify(result))
+  //       .send(outputBuffer);
+  //   }
+  // }
   sendResponseAndDeleteTempFiles: function(reply, outputFormat, result, outputBuffer, inputPath, outputPath) {
     try {
       fs.unlinkSync(inputPath);
       fs.unlinkSync(outputPath);
     } finally {
+      const resultData = Buffer.from(JSON.stringify(result)).toString('base64');
       reply
         .header('Content-Type', `image/${outputFormat}`)
-        .header('X-Image-Data', JSON.stringify(result))
+        .header('X-Image-Data', resultData)
         .send(outputBuffer);
     }
   }

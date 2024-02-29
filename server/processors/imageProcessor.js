@@ -1,4 +1,3 @@
-// server/processors/imageProcessor.js
 const common = require('./modules/common');
 const sharp = require('sharp');
 
@@ -24,9 +23,10 @@ async function processImage(request, reply) {
   const output = common.createOutputObject(data, outputMetadata, outputFormat, params);
   const result = common.createResultObject(input, output, params, startTime);
 
+  const resultData = Buffer.from(JSON.stringify(result)).toString('base64');
   reply
     .header('Content-Type', `image/${outputFormat}`)
-    .header('X-Image-Data', JSON.stringify(result))
+    .header('X-Image-Data', resultData)
     .send(outputBuffer);
 }
 

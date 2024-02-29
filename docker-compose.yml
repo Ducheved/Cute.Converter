@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  srv:
+    build: 
+      context: ./server
+      dockerfile: Dockerfile
+    hostname: srv
+    ports:
+      - "33250:33250"
+    environment:
+      - ADDRESS=0.0.0.0
+      - PORT=33250
+      - UNIT=1
+      - TYPE=1
+    networks:
+       - network
+    restart: always
+
+  frnt:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 15900:80
+    environment:
+      - VUE_APP_SERVER=
+    restart: always

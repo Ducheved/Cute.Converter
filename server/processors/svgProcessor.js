@@ -31,10 +31,10 @@ async function processSvg(request, reply) {
   const input = common.createInputObject(data, fileBuffer, params);
   const output = common.createOutputObject(data, outputMetadata, outputFormat, params);
   const result = common.createResultObject(input, output, params, startTime);
-
+  const resultData = Buffer.from(JSON.stringify(result)).toString('base64');
   reply
     .header('Content-Type', `image/${outputFormat}`)
-    .header('X-Image-Data', JSON.stringify(result))
+    .header('X-Image-Data', JSON.stringify(resultData))
     .send(outputBuffer);
 }
 

@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Victor+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind forms;
+
+#sakura-branch {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transform: rotate(0deg);
+  /* background: url('/@/assets/cherryblossoms.svg') no-repeat; */
+  background-size: contain;
+}
+
+.dark #sakura-branch {
+  /* background: url('/@/assets/cherryblossoms-dark.svg') no-repeat; */
+}
+
+@media (max-width: 600px) {
+  #sakura-branch {
+    top: -48px;
+    left: -96px;
+    transform: rotate(-47deg);
+    width: 113vh;
+    height: 134vw;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1200px) {
+  #sakura-branch {
+    top: 4px;
+    left: -49px;
+    transform: rotate(-29deg);
+    width: 85vh;
+    height: 64vw;
+  }
+}
+
+@media (min-width: 1201px) {
+  #sakura-branch {
+    top: -66px;
+    left: -35px;
+    transform: rotate(-29deg);
+    width: 108vh;
+    height: 82vw;
+  }
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  /* transition: all 0.08s cubic-bezier(1, 0.5, 0.8, 1); */
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+.move-enter-active,
+.move-leave-active {
+  /* transition: transform .05s; */
+}
+.move-enter,
+.move-leave-to {
+  /* transform: translateY(10%); */
+}
+
+header .always-visible .animate-move {
+  /* transition: flex 0.3s ease; */
+}
+
+.purrs {
+  transition: all 0.3s ease;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #f43f5e;
+  border: none;
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #f43f5e;
+  border: none;
+  cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  height: 10px;
+  cursor: pointer;
+  animate: 0.2s;
+}
+
+input[type='range']::-moz-range-track {
+  height: 10px;
+  cursor: pointer;
+  animate: 0.2s;
+}
