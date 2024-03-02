@@ -11,20 +11,15 @@ require('dotenv').config();
 
 const { ADDRESS = 'localhost', PORT = '33250' } = process.env;
 
-// Чтение сертификата SSL и ключа
-const httpsOptions = {
-  key: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.key')),
-  cert: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.crt'))
-};
+if (PROTOCOL === 'https') {
+  const httpsOptions = {
+    key: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.key')),
+    cert: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.crt'))
+  };
+  fastifyOptions.https = httpsOptions;
+  fastifyOptions.http2 = true;
+}
 
-// Создание экземпляра Fastify
-const fastify = Fastify({
-  logger: true,
-  https: httpsOptions,
-  http2: true
-});
-
-// Остальной код остается без изменений...
 fastify.register(require('@fastify/multipart'), {
   limits: {
     fieldNameSize: 1000,
