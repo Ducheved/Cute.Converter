@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const Fastify = require('fastify');
+const fastify = require('fastify');
 const routes = require('./endpoints/main.js');
 const helmet = require('@fastify/helmet');
 const cors = require('@fastify/cors');
@@ -19,6 +19,8 @@ if (process.env.PROTOCOL_API === 'https') {
   fastifyOptions.https = httpsOptions;
   fastifyOptions.http2 = true;
 }
+
+
 
 fastify.register(require('@fastify/multipart'), {
   limits: {
