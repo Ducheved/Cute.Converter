@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const fastify = require('fastify');
+const fastify = require('fastify')({ logger: true });
 const routes = require('./endpoints/main.js');
+const static = require('@fastify/static');
+const path = require('path');
 const helmet = require('@fastify/helmet');
 const cors = require('@fastify/cors');
 const rateLimit = require('@fastify/rate-limit');
@@ -10,17 +10,6 @@ const metricsUtils = require('./utils/metrics');
 require('dotenv').config();
 
 const { ADDRESS = 'localhost', PORT = '33250' } = process.env;
-
-if (process.env.PROTOCOL_API === 'https') {
-  const httpsOptions = {
-    key: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.key')),
-    cert: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.crt'))
-  };
-  fastifyOptions.https = httpsOptions;
-  fastifyOptions.http2 = true;
-}
-
-
 
 fastify.register(require('@fastify/multipart'), {
   limits: {
