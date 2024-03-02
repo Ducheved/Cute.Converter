@@ -33,24 +33,6 @@ The current implementation provides the following features:
 
 Please note that this is a work in progress and additional features will be added in the future.
 
-## Built With
-
-This project uses the following dependencies:
-
-- [Fastify](https://www.fastify.io/) for the web framework.
-- [Fastify CORS](https://github.com/fastify/fastify-cors) for handling Cross-Origin Resource Sharing.
-- [Fastify Helmet](https://github.com/fastify/fastify-helmet) for securing HTTP headers.
-- [Fastify JWT](https://github.com/fastify/fastify-jwt) for JSON Web Token authentication.
-- [Fastify Multipart](https://github.com/fastify/fastify-multipart) for handling multipart/form-data requests.
-- [Fastify Rate Limit](https://github.com/fastify/fastify-rate-limit) for rate limiting.
-- [Fastify Static](https://github.com/fastify/fastify-static) for serving static files.
-- [dotenv](https://github.com/motdotla/dotenv) for environment variable management.
-- [fs](https://nodejs.org/api/fs.html) for file system operations.
-- [pg](https://node-postgres.com/) for interacting with PostgreSQL databases. (Future)
-- [Sequelize](https://sequelize.org/) for database ORM. (Future)
-- [Sharp](https://sharp.pixelplumbing.com/) for high performance image processing.
-
-![Fastify](https://fastify.dev/img/logos/fastify-white.svg)
 
 ## Author
 
