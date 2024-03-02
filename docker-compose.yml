@@ -14,6 +14,7 @@ services:
       - PORT=${SRV_PORT}
       - UNIT=1
       - TYPE=1
+      - PROTOCOL=${PROTOCOL_API}
     restart: on-failure
 
   frnt:
