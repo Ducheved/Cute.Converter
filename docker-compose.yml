@@ -21,7 +21,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_APP_API_URL=${PROTOCOL}://${SRV_HOSTNAME}:${SRV_PORT}
+        - VITE_APP_API_URL=${PROTOCOL}://${SRV_HOSTNAME}${SRV_PORT_HOSTNAME}
     hostname: frnt
     ports:
       - ${FRNT_PORT}:80
