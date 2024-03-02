@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const { ADDRESS = 'localhost', PORT = '33250' } = process.env;
 
-if (PROTOCOL_API === 'https') {
+if (process.env.PROTOCOL_API === 'https') {
   const httpsOptions = {
     key: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.key')),
     cert: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.crt'))
