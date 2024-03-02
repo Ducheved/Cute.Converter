@@ -1,6 +1,7 @@
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs');
+const archiver = require('archiver');
 
 module.exports = {
   validateAndConvertToBuffer: async function(data, validMimeTypes) {
@@ -8,16 +9,121 @@ module.exports = {
     if (!validMimeTypes.includes(mimetype)) {
       throw new Error(`Invalid file type. Only ${validMimeTypes.join(', ')}`);
     }
-    return await data.toBuffer();
+    if (typeof data.toBuffer === 'function') {
+      return await data.toBuffer();
+    } else if (Buffer.isBuffer(data.data)) {
+      return data.data;
+    } else {
+      throw new Error('Data must be a buffer or have a toBuffer method');
+    }
   },
 
-  saveFile: function(data, fileData, dir) {
-    const serverDir = path.resolve(__dirname, '..', '..');
-    const filePath = path.join(serverDir, dir, `${Date.now()}-${data.filename}`);
+  processSvg: async function(data, params) {
+    const fileBuffer = await this.validateAndConvertToBuffer(data, ['image/svg+xml']);
+    const cleanedSvg = await optimize(fileBuffer.toString(), { path: data.filename, ...params.svgoConfig });
+  
+    const outputFormat = this.determineOutputFormat(params, 'svg', ['webp', 'png', 'jpg', 'tiff', 'svg', 'jpeg']);
+  
+    let outputBuffer, outputMetadata;
+    if (outputFormat === 'svg') {
+      outputBuffer = Buffer.from(cleanedSvg.data);
+      outputMetadata = { format: 'svg', width: null, height: null, size: outputBuffer.length };
+    } else {
+      let image = sharp(Buffer.from(cleanedSvg.data)).toFormat(outputFormat);
+      image = this.setImageQualityAndFormat(image, fileBuffer, outputFormat, params);
+      image = this.optimizeImage(image, params);
+      image = this.resizeImage(image, params);
+  
+      const result = await this.generateOutputBufferAndMetadata(image);
+      outputBuffer = result.outputBuffer;
+      outputMetadata = result.outputMetadata;
+    }
+  
+    return { outputBuffer, outputMetadata };
+  },
+
+  cropImage: function(image, params) {
+    if (params.crop) {
+      let { top, left, width, height } = JSON.parse(params.crop);
+      return image.extract({ top, left, width, height });
+    }
+    return image;
+  },
+
+  applyFilter: function(image, params) {
+    if (params.filter) {
+      if (params.filter === 'greyscale' || params.filter === 'grayscale') {
+        return image.greyscale();
+      } else if (params.filter === 'invert') {
+        return image.negate();
+      }
+    }
+    return image;
+  },
+
+  adjustBrightness: function(image, params) {
+    if (params.brightness) {
+      const brightness = parseFloat(params.brightness);
+      return image.modulate({ brightness });
+    }
+    return image;
+  },
+
+  adjustContrast: function(image, params) {
+    if (params.contrast) {
+      const contrast = parseFloat(params.contrast);
+      return image.modulate({ contrast });
+    }
+    return image;
+  },
+
+  processImage: async function(data, params) {
+    const fileBuffer = await this.validateAndConvertToBuffer(data, ['image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'image/tiff', 'image/gif']);
+  
+    const metadata = await sharp(fileBuffer).metadata();
+    const outputFormat = this.determineOutputFormat(params, metadata.format, ['png', 'jpg', 'webp', 'tiff', 'jpeg', 'gif']);
+  
+    let image = sharp(fileBuffer).toFormat(outputFormat);
+    image = this.setImageQualityAndFormat(image, fileBuffer, outputFormat, params);
+    image = this.optimizeImage(image, params);
+    image = this.resizeImage(image, params);
+  
+    const result = await this.generateOutputBufferAndMetadata(image);
+    const outputBuffer = result.outputBuffer;
+    const outputMetadata = result.outputMetadata;
+  
+    return { outputBuffer, outputMetadata };
+  },
+
+saveFile: function(data, fileData, dir) {
+  if (typeof data !== 'object' || typeof data.filename !== 'string') {
+    throw new Error('Invalid data');
+  }
+  if (typeof fileData !== 'string' && !Buffer.isBuffer(fileData)) {
+    throw new Error('Invalid fileData');
+  }
+  if (typeof dir !== 'string') {
+    throw new Error('Invalid dir');
+  }
+  const serverDir = path.resolve(__dirname, '..', '..');
+  const filePath = path.join(serverDir, dir, `${Date.now()}-${data.filename}`);
+  try {
     fs.mkdirSync(path.dirname(filePath), { recursive: true });
     fs.writeFileSync(filePath, fileData || '');
-    return filePath;
-  },
+  } catch (err) {
+    console.error('Error saving file:', err);
+    throw err;
+  }
+  try {
+    if (!fs.existsSync(filePath)) {
+      throw new Error('File not saved');
+    }
+  } catch (err) {
+    console.error('Error checking file:', err);
+    throw err;
+  }
+  return filePath;
+},
 
 
   determineOutputFormat: function(params, defaultFormat, validFormats) {
@@ -25,15 +131,12 @@ module.exports = {
   },
 
   setImageQuality: function(image, outputFormat, quality) {
-    if (outputFormat === 'jpeg') {
-      return image.jpeg({ quality });
+    if (outputFormat === 'jpeg' || outputFormat === 'jpg') {
+      return image.jpeg({ quality, chromaSubsampling: '4:4:4', progressive: true, mozjpeg: true });
     } else if (outputFormat === 'webp') {
-      return image.webp({ quality });
+      return image.webp({ quality, lossless: true });
     } else if (outputFormat === 'png') {
-      const compressionLevel = 9 - Math.floor(quality / 11);
-      return image.png({ compressionLevel });
-    } else if (outputFormat === 'jpg') {
-      return image.jpeg({ quality });
+      return image.png({ quality: Math.round(quality / 100), compressionLevel: Math.round(quality / 100), progressive: true });
     } else if (outputFormat === 'tiff') {
       return image.tiff({ quality });
     }
@@ -41,6 +144,10 @@ module.exports = {
   },
 
   setImageQualityAndFormat: function(image, fileBuffer, outputFormat, params) {
+    if (params.quality >= 95) {
+      return image;
+    }
+  
     let processedImage = sharp(fileBuffer).toFormat(outputFormat);
     if (params.quality) {
       const quality = parseInt(params.quality, 10);
@@ -53,7 +160,11 @@ module.exports = {
   },
 
   optimizeImage: function(image, params) {
-    return params.optimize ? image.flatten({ background: { r: 255, g: 255, b: 255 } }) : image;
+    if (params.optimize === true) {
+      console.log(params.optimize)
+      return image.removeAlpha();
+    }
+    return image;
   },
 
   resizeImage: function(image, params) {
@@ -116,6 +227,15 @@ module.exports = {
   //       .send(outputBuffer);
   //   }
   // }
+
+  createArchive: function(reply) {
+    const archive = archiver('zip');
+    reply.header('Content-Type', 'application/zip');
+    reply.header('Content-Disposition', 'attachment; filename=images.zip');
+    archive.pipe(reply.raw);
+    return archive;
+  },
+
   sendResponseAndDeleteTempFiles: function(reply, outputFormat, result, outputBuffer, inputPath, outputPath) {
     try {
       fs.unlinkSync(inputPath);

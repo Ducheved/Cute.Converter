@@ -1,11 +1,9 @@
 <script setup>
-import MainComponents from '../components/MainComponents.vue'
+  import MainComponents from '../components/MainComponents.vue';
 </script>
 
 <template>
-  <div
-    class="z-30 p-8 purrs w-full purrs flex justify-between bg-rose-300 shadow-lg dark:bg-fuchsia-950 rounded-lg"
-  >
+  <div class="purrs purrs z-30 flex w-full justify-between rounded-lg bg-rose-300 p-8 shadow-lg dark:bg-fuchsia-950">
     <MainComponents />
   </div>
 </template>

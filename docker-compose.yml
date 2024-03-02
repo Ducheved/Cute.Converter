@@ -4,24 +4,23 @@ services:
     build: 
       context: ./server
       dockerfile: Dockerfile
-    hostname: srv
+    hostname: ${SRV_HOSTNAME}
     ports:
-      - "33250:33250"
+      - "${SRV_PORT}:${SRV_PORT}"
     environment:
       - ADDRESS=0.0.0.0
-      - PORT=33250
+      - PORT=${SRV_PORT}
       - UNIT=1
       - TYPE=1
-    networks:
-       - network
-    restart: always
+    restart: on-failure
 
   frnt:
     build: 
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - VITE_APP_API_URL=${PROTOCOL}://${SRV_HOSTNAME}:${SRV_PORT}
+    hostname: frnt
     ports:
-      - 15900:80
-    environment:
-      - VUE_APP_SERVER=
-    restart: always
+      - ${FRNT_PORT}:80
+    restart: on-failure

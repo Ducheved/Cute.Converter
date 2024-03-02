@@ -1,7 +1,7 @@
-const fastify = require('fastify')({ logger: true });
-const routes = require('./endpoints/main.js');
-const static = require('@fastify/static');
+const fs = require('fs');
 const path = require('path');
+const Fastify = require('fastify');
+const routes = require('./endpoints/main.js');
 const helmet = require('@fastify/helmet');
 const cors = require('@fastify/cors');
 const rateLimit = require('@fastify/rate-limit');
@@ -11,13 +11,27 @@ require('dotenv').config();
 
 const { ADDRESS = 'localhost', PORT = '33250' } = process.env;
 
+// Чтение сертификата SSL и ключа
+const httpsOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'srv.loc.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'srv.loc.crt'))
+};
+
+// Создание экземпляра Fastify
+const fastify = Fastify({
+  logger: true,
+  https: httpsOptions,
+  http2: true
+});
+
+// Остальной код остается без изменений...
 fastify.register(require('@fastify/multipart'), {
   limits: {
-    fieldNameSize: 100,
-    fieldSize: 100,
-    fields: 10,
-    fileSize: 100 * 1024 * 1024,
-    files: 10,
+    fieldNameSize: 1000,
+    fieldSize: 1000,
+    fields: 100,
+    fileSize: 1000 * 1024 * 1024,
+    files: 100,
     headerPairs: 2000,
     parts: 1000
   }
