@@ -13,8 +13,8 @@ const { ADDRESS = 'localhost', PORT = '33250' } = process.env;
 
 // Чтение сертификата SSL и ключа
 const httpsOptions = {
-  key: fs.readFileSync(path.join(__dirname, 'srv.loc.key')),
-  cert: fs.readFileSync(path.join(__dirname, 'srv.loc.crt'))
+  key: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.key')),
+  cert: fs.readFileSync(path.join(__dirname, process.env.SRVNAME + '.crt'))
 };
 
 // Создание экземпляра Fastify

@@ -4,6 +4,8 @@ services:
     build: 
       context: ./server
       dockerfile: Dockerfile
+      args:
+        - SRVNAME=${SRV_HOSTNAME}
     hostname: ${SRV_HOSTNAME}
     ports:
       - "${SRV_PORT}:${SRV_PORT}"
