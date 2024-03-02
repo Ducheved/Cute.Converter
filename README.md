@@ -1,6 +1,6 @@
 # Cute.Converter Σ(°△°|||)︴
 
-| VERSION 0.0.1
+| VERSION 0.0.11
 
 This repository is a work in progress and does not contain a finished product. It is the foundation for a future image converter that currently works with the following endpoint:
 
