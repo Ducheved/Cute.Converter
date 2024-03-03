@@ -135,3 +135,95 @@ input[type='range']::-moz-range-track {
   cursor: pointer;
   animate: 0.2s;
 }
+/* 
+.switch {
+  width: 5px;
+  height: 30px;
+  padding: 5px;
+  background: white;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.switch-button {
+  width: 24px;
+  height: 24px;
+  background: black;
+  border-radius: 50%;
+  transition: transform 0.3s;
+} */
+
+.switch-button-on {
+  transform: translateX(26px);
+}
+
+.dark .switch {
+  background: black;
+}
+
+.dark .switch-button {
+  background: white;
+}
+
+.dark-mode-switch-container {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  z-index: 1000;
+  /* transform: rotate(180deg); */
+}
+
+.mewoglee-rotation-for-fun {
+  /* transform: rotate(180deg); */
+}
+
+@keyframes slideIn {
+  100% {
+    transform: scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(0px) skewX(0deg) skewY(0deg);
+    transform-origin: 100% 100%;
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  0% {
+    transform: scaleX(0.9) scaleY(0.9) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(20vw) translateY(0px) translateZ(0px) skewX(30deg) skewY(0deg);
+    transform-origin: 100% 100%;
+    opacity: 0;
+    filter: blur(40px);
+  }
+}
+
+
+.slide-out-blurred-right {
+	-webkit-animation: slide-out-blurred-right 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
+	        animation: slide-out-blurred-right 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
+}
+@keyframes slideOut {
+  0% {
+    transform: scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(0px) skewX(0deg) skewY(0deg);
+    transform-origin: 100% 100%;
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: scaleX(0.9) scaleY(0.9) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(20vw) translateY(0px) translateZ(0px) skewX(30deg) skewY(0deg);
+    transform-origin: 100% 100%;
+    opacity: 0;
+    filter: blur(40px);
+  }
+}
+
+.slide-enter-active {
+  animation: slideIn 0.5s ease 0s 1 normal forwards;
+}
+
+.slide-leave-active {
+  animation: slideOut 2s ease 0s 1 normal forwards;
+}
+
+.kittybutt {
+  position: relative;
+  z-index: 1000;
+}

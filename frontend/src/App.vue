@@ -1,28 +1,57 @@
 <script setup>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { RouterLink, RouterView } from 'vue-router';
   import { useDarkModeStore } from './stores/darkModeStore';
+  import { useMenuExpandStore } from './stores/menuExpandStore';
   import cherryblossoms from '@/assets/cherryblossoms.svg';
   import cherryblossomsDark from '@/assets/cherryblossoms-dark.svg';
 
   const darkModeStore = useDarkModeStore();
-  const show = ref(true);
+  const menuExpandStore = useMenuExpandStore();
+  let show = ref(localStorage.getItem('menuExpanded') === 'true');
+  const roundedClass = ref(false);
+  const afterLeave = () => {
+    roundedClass.value = !false;
+  };
+
+  const beforeEnter = () => {
+    roundedClass.value = !true;
+  };
+  const toggleMenu = () => {
+    menuExpandStore.toggleMenu();
+  };
+
+  const menuExpandClass = computed(() => ({
+    '': menuExpandStore.isMenuExpanded,
+    'rounded-tl-lg': menuExpandStore.isMenuExpanded,
+  }));
 </script>
 
 <template>
   <div class="bg-gradient-to-r from-pink-100 via-pink-200 to-pink-300 dark:bg-gradient-to-r dark:from-purple-700 dark:via-purple-800 dark:to-purple-900">
-    <div class="container mx-auto">
-      <div class="dark-mode-switch-container rounded-b-lg bg-fuchsia-950 p-2 font-sans text-white shadow-lg dark:bg-rose-300 dark:text-gray-800">
-        <div class="switch" @click="darkModeStore.toggleDarkMode">
-          <div class="switch-button" :class="{ 'switch-button-on': darkModeStore.isDarkMode }"></div>
+    <div class="container mt-2 sm:mt-2 md:mb-0 mb-2 sm:md-2 md:mb-0 mx-auto">
+      <div class="inline-block dark-mode-switch-container ">
+        <transition name="slide" @before-enter="beforeEnter" @after-leave="afterLeave">
+          <div class="inline-block z-1000 rounded-tl-lg bg-fuchsia-950 p-2 font-sans text-white shadow-lg dark:bg-rose-300 dark:text-gray-800" v-if="!menuExpandStore.isMenuExpanded">
+          <div>
+            <RouterLink class="inline-block border-l border-[var(--color-border)] px-4 first:border-0 dark:border-white" to="/"> <font-awesome-icon icon="user" /> About </RouterLink>
+            <RouterLink class="inline-block border-l border-[var(--color-border)] px-4 first:border-0 dark:border-white" to="/about"> <font-awesome-icon icon="file-import" /> Сonvertr </RouterLink>
+            <div class="inline-block border-l border-[var(--color-border)] px-4 first:border-0 dark:border-white"><font-awesome-icon icon="tree" /></div>
+            <div class="switch mr-4" @click="darkModeStore.toggleDarkMode">
+              <div class="switch-button" :class="{ 'switch-button-on': darkModeStore.isDarkMode }"></div>
+            </div>
+           </div>
         </div>
-        <hr class="my-2 border-t border-gray-200" />
-        <button class="mewoglee-rotation-for-fun" @click="show = !show"><font-awesome-icon icon="expand" /> {{ show ? 'Hide' : 'Show' }}</button>
+      </transition>
+      <div class="inline-block kittybutt bg-fuchsia-950 p-2 font-sans text-white shadow-lg dark:bg-rose-300 dark:text-gray-800"
+      :class="menuExpandClass">
+          <button class="inline-block border-l border-[var(--color-border)] px-4 first:border-0 dark:border-white" @click="toggleMenu"><font-awesome-icon icon="expand" /> {{ menuExpandStore.isMenuExpanded ? 'Hide' : 'Show' }}</button>
+        </div>
       </div>
       <div id="sakura-branch" :class="{ dark: isDark }"></div>
       <header class="-z-1 flex min-h-screen min-h-screen flex-col gap-4 md:flex-row">
         <Transition name="slide-fade">
-          <div v-if="show" class="prose-headings:none md:prose-md lg:prose-md prose z-10 flex h-screen w-full items-center justify-center p-4 dark:prose-invert sm:prose-sm xl:prose-lg 2xl:prose-xl prose-h1:mb-0 prose-p:mt-1 prose-a:no-underline dark:text-white">
+          <div v-if="menuExpandStore.isMenuExpanded" class="prose-headings:none md:prose-md lg:prose-md prose z-10 flex w-full items-center justify-center p-4 dark:prose-invert sm:prose-sm xl:prose-lg 2xl:prose-xl prose-h1:mb-0 prose-p:mt-1 prose-a:no-underline dark:text-white md:h-screen">
             <div class="z-10">
               <div class="">
                 <h1>Cute.Converter</h1>
@@ -38,7 +67,7 @@
         </Transition>
 
         <div class="w-full">
-          <div class="flex h-screen items-center p-4 leading-6 dark:text-white">
+          <div class="flex items-center p-4 leading-6 dark:text-white md:h-screen">
             <router-view />
           </div>
         </div>
@@ -48,48 +77,6 @@
 </template>
 
 <style scoped>
-  .switch {
-    width: 60px;
-    height: 34px;
-    padding: 5px;
-    background: white;
-    border-radius: 34px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-
-  .switch-button {
-    width: 24px;
-    height: 24px;
-    background: black;
-    border-radius: 50%;
-    transition: transform 0.3s;
-  }
-
-  .switch-button-on {
-    transform: translateX(26px);
-  }
-
-  .dark .switch {
-    background: black;
-  }
-
-  .dark .switch-button {
-    background: white;
-  }
-
-  .dark-mode-switch-container {
-    position: fixed;
-    bottom: 0px;
-    right: 16px;
-    z-index: 1000;
-    transform: rotate(180deg);
-  }
-
-  .mewoglee-rotation-for-fun {
-    transform: rotate(180deg);
-  }
-
   #sakura-branch {
     background: url('@/assets/cherryblossoms.svg') no-repeat;
   }
@@ -97,4 +84,18 @@
   .dark #sakura-branch {
     background: url('@/assets/cherryblossoms-dark.svg') no-repeat;
   }
+
+  .switch {
+  @apply relative inline-block align-middle dark:bg-fuchsia-950 shadow-inner shadow bg-rose-300 rounded-xl cursor-pointer transition-colors duration-200 ease-in;
+  width: 3rem;
+  height: calc(1em + 0.2rem);
+}
+
+.switch-button {
+  @apply absolute top-0 left-0 h-full w-1/2 bg-white shadow-lg rounded-xl shadow-md transform transition-transform duration-200 ease-in;
+}
+
+.switch-button-on {
+  @apply translate-x-full bg-purple-600;
+}
 </style>
