@@ -1,0 +1,43 @@
+name: Publish Docker images
+on:
+  push:
+    branches: [ main ]
+env:
+  SRV_HOSTNAME: api-cc.imeow.pro
+  SRV_PORT: 41002
+  FRNT_PORT: 41003
+  PROTOCOL: https
+  PROTOCOL_API: http
+  SRV_PORT_HOSTNAME: 
+jobs:
+  push_to_registry:
+    name: Push Docker image to DockerHub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Log in to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: ./server
+          file: ./server/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/srv:latest
+          build-args:
+            SRVNAME: ${{ env.SRV_HOSTNAME }}
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v2
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/frnt:latest
+          build-args:
+            VITE_APP_API_URL: ${{ env.PROTOCOL }}://${{ env.SRV_HOSTNAME }}${{ env.SRV_PORT_HOSTNAME }}
+      - name: Webhook to Portainer
+        run: curl -X POST https://port.ducheved.ru/api/stacks/webhooks/e65bef49-6744-4b5e-bdf4-e9fa3e7b4889
