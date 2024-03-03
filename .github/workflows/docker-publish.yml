@@ -23,7 +23,7 @@ jobs:
         push: true
         tags: username/srv:latest
         build-args: 
-          SRVNAME: ${{ secrets.SRV_HOSTNAME }}
+          - SRVNAME=${{ secrets.SRV_HOSTNAME }}
     - name: Build and push frnt image
       uses: docker/build-push-action@v2
       with:
@@ -32,4 +32,4 @@ jobs:
         push: true
         tags: username/frnt:latest
         build-args: 
-          VITE_APP_API_URL: ${{ secrets.PROTOCOL }}://${{ secrets.SRV_HOSTNAME }}${{ secrets.SRV_PORT_HOSTNAME }}
+          - VITE_APP_API_URL=${{ secrets.PROTOCOL }}://${{ secrets.SRV_HOSTNAME }}${{ secrets.SRV_PORT_HOSTNAME }}
