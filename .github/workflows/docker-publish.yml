@@ -21,7 +21,7 @@ jobs:
         context: ./server
         file: ./server/Dockerfile
         push: true
-        tags: username/srv:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitsrv
         build-args: 
           SRVNAME=${{ secrets.SRV_HOSTNAME }}
     - name: Build and push frnt image
@@ -30,6 +30,6 @@ jobs:
         context: ./frontend
         file: ./frontend/Dockerfile
         push: true
-        tags: username/frnt:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitfrnt
         build-args: 
           VITE_APP_API_URL=${{ secrets.PROTOCOL }}://${{ secrets.SRV_HOSTNAME }}${{ secrets.SRV_PORT_HOSTNAME }}
