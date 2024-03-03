@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  srv:
+    image: ducheved/gitsrv
+    hostname: ${SRV_HOSTNAME}
+    ports:
+      - "${SRV_PORT}:${SRV_PORT}"
+    environment:
+      - ADDRESS=0.0.0.0
+      - PORT=${SRV_PORT}
+      - UNIT=1
+      - TYPE=1
+      - PROTOCOL=${PROTOCOL_API}
+    restart: on-failure
+
+  frnt:
+    image: ducheved/gitfrnt
+    hostname: frnt
+    ports:
+      - ${FRNT_PORT}:80
+    restart: on-failure

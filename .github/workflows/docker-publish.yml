@@ -32,4 +32,24 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitfrnt
         build-args: 
-          VITE_APP_API_URL=${{ secrets.PROTOCOL }}://${{ secrets.SRV_HOSTNAME }}${{ secrets.SRV_PORT_HOSTNAME }}
+          VITE_APP_API_URL=${{ secrets.PROTOCOL }}://${{ secrets.SRV_HOSTNAME }}
+  deploy:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    - name: Deploy to server
+      env:
+        ADDRESS: 0.0.0.0
+        PORT: ${{ secrets.SRV_PORT }}
+        UNIT: 1
+        TYPE: 1
+        PROTOCOL: ${{ secrets.PROTOCOL_API }}
+        SRV_HOSTNAME: ${{ secrets.SRV_HOSTNAME }}
+        SRV_PORT: ${{ secrets.SRV_PORT }}
+        FRNT_PORT: ${{ secrets.FRNT_PORT }}
+        PROTOCOL_API: http
+      run: |
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitsrv
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitfrnt
+        docker-compose -f docker-compose.prod.yml up -d
