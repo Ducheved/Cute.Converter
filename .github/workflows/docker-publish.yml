@@ -34,6 +34,7 @@ jobs:
         build-args: 
           VITE_APP_API_URL=${{ secrets.PROTOCOL }}://${{ secrets.SRV_HOSTNAME }}
   deploy:
+    needs: build-and-push
     runs-on: self-hosted
     steps:
     - name: Checkout repository

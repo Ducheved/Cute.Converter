@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   srv:
-    image: ducheved/gitsrv
+    image: ducheved/cute.converter:gitsrv
     hostname: api-cc.imeow.pro
     ports:
       - 41002:41002
@@ -14,7 +14,7 @@ services:
     restart: on-failure
 
   frnt:
-    image: ducheved/gitfrnt
+    image: ducheved/cute.converter:gitfrnt
     hostname: frnt
     ports:
       - 41003:80
