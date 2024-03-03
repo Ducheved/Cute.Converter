@@ -39,17 +39,19 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+    - name: Stop and remove previous deployment
+      run: docker-compose -f docker-compose.prod.yml down --rmi all
     - name: Deploy to server
       env:
         ADDRESS: 0.0.0.0
         PORT: ${{ secrets.SRV_PORT }}
         UNIT: 1
         TYPE: 1
-        PROTOCOL: ${{ secrets.PROTOCOL_API }}
+        PROTOCOL: ${{ secrets.PROTOCOL }}
         SRV_HOSTNAME: ${{ secrets.SRV_HOSTNAME }}
         SRV_PORT: ${{ secrets.SRV_PORT }}
         FRNT_PORT: ${{ secrets.FRNT_PORT }}
-        PROTOCOL_API: http
+        PROTOCOL_API: ${{ secrets.PROTOCOL_API }}
       run: |
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitsrv
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cute.converter:gitfrnt
