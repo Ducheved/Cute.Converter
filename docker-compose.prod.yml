@@ -2,20 +2,20 @@ version: '3.8'
 services:
   srv:
     image: ducheved/gitsrv
-    hostname: ${SRV_HOSTNAME}
+    hostname: api-cc.imeow.pro
     ports:
-      - "${SRV_PORT}:${SRV_PORT}"
+      - 41002:41002
     environment:
       - ADDRESS=0.0.0.0
-      - PORT=${SRV_PORT}
+      - PORT=41002
       - UNIT=1
       - TYPE=1
-      - PROTOCOL=${PROTOCOL_API}
+      - PROTOCOL=http
     restart: on-failure
 
   frnt:
     image: ducheved/gitfrnt
     hostname: frnt
     ports:
-      - ${FRNT_PORT}:80
+      - 41003:80
     restart: on-failure
