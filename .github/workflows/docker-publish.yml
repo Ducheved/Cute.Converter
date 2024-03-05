@@ -46,8 +46,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-    - name: Stop and remove previous deployment
-      run: docker-compose -f docker-compose.prod.yml down --rmi all
+    - name: Remove existing .env file
+      run: rm -f .env
     - name: Create .env file
       run: |
         echo ADDRESS=0.0.0.0 >> .env
@@ -65,6 +65,8 @@ jobs:
         echo BOT_ADDRESS=${{ secrets.BOT_ADDRESS }} >> .env
         echo USE_WEBHOOKS=${{ secrets.USE_WEBHOOKS }} >> .env
         echo WEBHOOK_URL=${{ secrets.WEBHOOK_URL }} >> .env
+    - name: Stop and remove previous deployment
+      run: docker-compose -f docker-compose.prod.yml down --rmi all
     - name: Deploy to server
       run: |
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/cuteconverter-frontend:latest
