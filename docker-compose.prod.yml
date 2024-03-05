@@ -1,21 +1,33 @@
 version: '3.8'
 services:
   srv:
-    image: ducheved/cute.converter:gitsrv
-    hostname: api-cc.imeow.pro
+    image: ducheved/cuteconverter-server:latest
+    hostname: ${SRV_HOSTNAME}
     ports:
-      - 41002:41002
+      - "${SRV_PORT}:${SRV_PORT}"
     environment:
       - ADDRESS=0.0.0.0
-      - PORT=41002
+      - PORT=${SRV_PORT}
       - UNIT=1
       - TYPE=1
-      - PROTOCOL=http
+      - PROTOCOL=${PROTOCOL_API}
     restart: on-failure
 
   frnt:
-    image: ducheved/cute.converter:gitfrnt
-    hostname: frnt
+    image: ducheved/cuteconverter-frontend:latest
     ports:
-      - 41003:80
+      - ${FRNT_PORT}:80
+    restart: on-failure
+
+  bot:
+    image: ducheved/cuteconverter-bot:latest
+    ports:
+      - "${BOT_PORT}:${BOT_PORT}"
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN}
+      - API_SERVER=${SRV_HOSTNAME}
+      - BOT_PORT=${BOT_PORT}
+      - BOT_ADDRESS=${BOT_ADDRESS}
+      - USE_WEBHOOKS=${USE_WEBHOOKS}
+      - WEBHOOK_URL=${PROTOCOL}://${BOT_HOSTNAME}
     restart: on-failure

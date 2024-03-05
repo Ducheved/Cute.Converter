@@ -1,8 +1,13 @@
 # .gitignore
+.env
 server/.env
 server/temp/
 server/node_modules
 server/package-lock.json
+bot/.env
+bot/temp/
+bot/node_modules
+bot/package-lock.json
 frontend/node_modules
 frontend/package-lock.json
 frontend/.DS_Store
@@ -20,6 +25,7 @@ frontend/*.ntvs*
 frontend/*.njsproj
 frontend/*.sln
 frontend/*.sw?
+/.env
 .env.local
 .env.*.local
 npm-debug.log*
@@ -36,4 +42,7 @@ pnpm-debug.log*
 .dockerignore
 server/.dockerignore
 frontend/.dockerignore
-bot
+.env
+.env
+frontend/src/assets/g8.png
+frontend/src/assets/image.png

@@ -33,7 +33,7 @@ fastify.register(metricsPlugin, {
   },
 });
 fastify.register(cors, {
-  origin: ["*", "http://frnt", "https://frnt", "http://localhost"],
+  origin: ["*"],
   methods: ["GET","POST"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Image-Data"],
   exposedHeaders: ["Content-Type", "Authorization", "X-Image-Data"],
