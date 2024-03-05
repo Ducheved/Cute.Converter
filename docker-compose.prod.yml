@@ -29,5 +29,5 @@ services:
       - BOT_PORT=${BOT_PORT}
       - BOT_ADDRESS=${BOT_ADDRESS}
       - USE_WEBHOOKS=${USE_WEBHOOKS}
-      - WEBHOOK_URL=${PROTOCOL}://${BOT_HOSTNAME}
+      - WEBHOOK_URL=${WEBHOOK_URL}
     restart: on-failure
