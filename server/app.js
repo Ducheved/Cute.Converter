@@ -1,16 +1,13 @@
 const fastify = require('fastify')({ logger: true });
 const routes = require('./endpoints/main.js');
-const static = require('@fastify/static');
-const path = require('path');
+// const static = require('@fastify/static');
+// const path = require('path');
 const helmet = require('@fastify/helmet');
 const cors = require('@fastify/cors');
 const rateLimit = require('@fastify/rate-limit');
 const metricsPlugin = require('fastify-metrics');
-const metricsUtils = require('./utils/metrics');
 require('dotenv').config();
-
 const { ADDRESS = 'localhost', PORT = '33250' } = process.env;
-
 fastify.register(require('@fastify/multipart'), {
   limits: {
     fieldNameSize: 1000,

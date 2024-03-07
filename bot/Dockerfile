@@ -1,13 +1,14 @@
-FROM node:latest
+FROM node:21.6.2-bookworm-slim
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-ENV BOT_TOKEN=YOUR_BOT_TOKEN
-ENV API_SERVER=https://api-cc.imeow.pro
-ENV BOT_PORT=41004
-ENV BOT_ADDRESS=0.0.0.0
-ENV USE_WEBHOOKS=TRUE
-ENV WEBHOOK_URL=https://bot-cc.imeow.pro
+ENV BOT_TOKEN=
+ENV API_SERVER=
+ENV API_PORT=
+ENV BOT_PORT=
+ENV BOT_ADDRESS=
+ENV USE_WEBHOOKS=
+ENV WEBHOOK_URL=
 EXPOSE 41004
 CMD [ "node", "app.js" ]

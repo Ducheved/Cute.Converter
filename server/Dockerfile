@@ -1,6 +1,6 @@
-FROM node:current-slim
+FROM node:21.6.2-bookworm-slim
 WORKDIR /app
-COPY package.json .
+COPY package*.json .
 RUN npm install
 COPY . .
 

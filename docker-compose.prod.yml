@@ -25,7 +25,8 @@ services:
       - "${BOT_PORT}:${BOT_PORT}"
     environment:
       - BOT_TOKEN=${BOT_TOKEN}
-      - API_SERVER=${SRV_HOSTNAME}
+      - API_SERVER=http://srv
+      - API_PORT=${SRV_PORT}
       - BOT_PORT=${BOT_PORT}
       - BOT_ADDRESS=${BOT_ADDRESS}
       - USE_WEBHOOKS=${USE_WEBHOOKS}

@@ -3,13 +3,10 @@
 server/.env
 server/temp/
 server/node_modules
-server/package-lock.json
 bot/.env
 bot/temp/
 bot/node_modules
-bot/package-lock.json
 frontend/node_modules
-frontend/package-lock.json
 frontend/.DS_Store
 frontend/dist
 frontend/.env.local
@@ -39,9 +36,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-.dockerignore
-server/.dockerignore
-frontend/.dockerignore
 .env
 .env
 frontend/src/assets/g8.png

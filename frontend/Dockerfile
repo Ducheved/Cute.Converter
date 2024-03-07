@@ -1,4 +1,4 @@
-FROM node:latest as builder
+FROM node:21.6.2-bookworm-slim as builder
 WORKDIR /app
 ENV PATH /usr/src/node_modules/.bin:$PATH
 ARG VITE_APP_API_URL
