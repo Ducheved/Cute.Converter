@@ -4,17 +4,17 @@ const sharp = require('sharp');
 async function processImage(request, reply) {
   const startTime = Date.now();
   const data = await request.file();
-  const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'image/tiff', 'image/gif'];
+  const validMimeTypes = ['image/png', 'image/jpg', 'image/jpeg', 'image/webp', 'image/tiff', 'image/gif', 'image/avif'];
+  const validFormats = ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'gif', 'avif'];
   const fileBuffer = await common.validateAndConvertToBuffer(data, validMimeTypes);
 
   const params = request.query;
   const metadata = await sharp(fileBuffer).metadata();
 
-  const outputFormat = common.determineOutputFormat(params, metadata.format, ['png', 'jpg', 'webp', 'tiff', 'jpeg', 'gif']);
+  const outputFormat = common.determineOutputFormat(params, metadata.format, validFormats);
 
   let image = sharp(fileBuffer).toFormat(outputFormat);
   image = common.setImageQualityAndFormat(image, fileBuffer, outputFormat, params);
-  image = common.optimizeImage(image, params);
   image = common.resizeImage(image, params);
 
   const { outputBuffer, outputMetadata } = await common.generateOutputBufferAndMetadata(image);

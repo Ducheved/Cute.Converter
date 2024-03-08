@@ -1,7 +1,5 @@
 const fastify = require('fastify')({ logger: true });
 const routes = require('./endpoints/main.js');
-// const static = require('@fastify/static');
-// const path = require('path');
 const helmet = require('@fastify/helmet');
 const cors = require('@fastify/cors');
 const rateLimit = require('@fastify/rate-limit');

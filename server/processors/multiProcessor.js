@@ -44,7 +44,6 @@ async function processImages(request, reply) {
                 } else {
                     let image = sharp(Buffer.from(cleanedSvg.data)).toFormat(outputFormat);
                     image = common.setImageQualityAndFormat(image, fileBuffer, outputFormat, params);
-                    image = common.optimizeImage(image, params);
                     image = common.resizeImage(image, params);
 
                     const result = await common.generateOutputBufferAndMetadata(image);
@@ -57,7 +56,6 @@ async function processImages(request, reply) {
 
                 let image = sharp(fileBuffer).toFormat(outputFormat);
                 image = common.setImageQualityAndFormat(image, fileBuffer, outputFormat, params);
-                image = common.optimizeImage(image, params);
                 image = common.resizeImage(image, params);
 
                 const result = await common.generateOutputBufferAndMetadata(image);
@@ -71,7 +69,6 @@ async function processImages(request, reply) {
 
             const resultData = Buffer.from(JSON.stringify(result)).toString('base64');
             archive.append(outputBuffer, { name: `${file.filename}.${outputFormat}` });
-            //return { outputBuffer, outputFormat, resultData };
             
         }));
 
