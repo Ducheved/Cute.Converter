@@ -27,5 +27,17 @@ export default defineConfig({
       usePolling: true,
       interval: 500
     }
+  },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
+    minify: 'terser',
+    target: 'modules',
+    brotliSize: false,
+    chunkSizeWarningLimit: 500
+  },
+  optimizeDeps: {
+    include: ['lodash']
   }
 })

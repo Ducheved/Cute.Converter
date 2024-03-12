@@ -60,7 +60,7 @@ const menuExpandClass = computed(() => ({
             }}</button>
         </div>
       </div>
-      <div id="sakura-branch" :class="{ dark: isDark }"></div>
+      <div id="sakura-branch"></div>
       <header class="-z-1 flex min-h-screen min-h-screen flex-col gap-4 md:flex-row">
         <Transition name="slide-fade">
           <div v-if="menuExpandStore.isMenuExpanded"
@@ -87,7 +87,7 @@ const menuExpandClass = computed(() => ({
         </Transition>
 
         <div class="w-full">
-          <div class="flex items-center p-4 leading-6 dark:text-white md:h-screen">
+          <div class="flex items-center p-4 leading-6 dark:text-white h-full">
             <router-view />
           </div>
         </div>

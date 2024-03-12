@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function submitForm(selectedFile, format, optimize, quality, height, width) {
+export async function submitForm(selectedFile, format, optimize, quality, height, width, onUploadProgress) {
   const formData = new FormData();
   formData.append('file', selectedFile);
   let endpoint = selectedFile.type === 'image/svg+xml' ? '/api/v1/svg/process' : '/api/v1/images/process';
@@ -31,6 +31,7 @@ export async function submitForm(selectedFile, format, optimize, quality, height
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      onUploadProgress,
       responseType: 'arraybuffer',
       timeout: 120000,
     });
@@ -56,17 +57,11 @@ export async function submitForm(selectedFile, format, optimize, quality, height
 
     return { image, decodedJson };
   } catch (error) {
-    if (error.code === 'ECONNABORTED') {
-      console.error('Request timed out:', error);
-    } else if (error.response) {
-      console.error('Server responded with an error:', error.response.status);
-      console.error('Error data:', error.response.data);
-    } else if (error.request) {
-      console.error('No response received:', error.request);
-    } else {
-      console.error('Error setting up the request:', error.message);
+    let errorMessage = error.message;
+    if (error.response && error.response.data && error.response.data.message) {
+      errorMessage = error.response.data.message;
     }
-    console.error('Error config:', error.config);
+    throw new Error(errorMessage);
   }
 }
 

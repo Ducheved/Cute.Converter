@@ -14,7 +14,6 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@coddicat/vue-pinch-scroll-zoom": "^4.3.5",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
@@ -23,7 +22,7 @@
     "axios": "^1.6.7",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",
-    "vue-panzoom": "^1.1.6",
+    "vue-cropperjs": "^5.0.0",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
@@ -47,6 +46,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "start-server-and-test": "^2.0.3",
     "tailwindcss": "^3.4.1",
+    "terser": "^5.29.1",
     "vite": "^5.0.11",
     "vite-plugin-copy": "^0.1.6",
     "vite-svg-loader": "^5.1.0",

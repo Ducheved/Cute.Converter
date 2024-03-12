@@ -19,6 +19,28 @@ export function initImagePanzoom(refs) {
   img.addEventListener('wheel', zoomImage.bind(this, img, imgContainer), {
     passive: false,
   });
+  let scale = 1;
+  let initialDistance = 0;
+  img.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+      initialDistance = Math.hypot(
+        e.touches[0].pageX - e.touches[1].pageX,
+        e.touches[0].pageY - e.touches[1].pageY
+      );
+    }
+  });
+  img.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+      const distance = Math.hypot(
+        e.touches[0].pageX - e.touches[1].pageX,
+        e.touches[0].pageY - e.touches[1].pageY
+      );
+      const ratio = distance / initialDistance;
+      scale = Math.min(Math.max(1, scale * ratio), 3);
+      img.style.transform = `scale(${scale})`;
+      initialDistance = distance;
+    }
+  });
 }
 
 export function zoomImage(img, imgContainer, e) {
@@ -39,3 +61,4 @@ export function resetZoom(refs) {
     refs.image.style.transform = 'scale(1)';
   }
 }
+
