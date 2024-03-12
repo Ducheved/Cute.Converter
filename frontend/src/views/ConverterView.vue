@@ -107,7 +107,8 @@
     <div>
       <div v-if="image">
         <div ref="container" class="image-container mt-4">
-          <img ref="image" v-if="!cropSelected" :src="image" alt="Processed image" class="mt-4 rounded-lg shadow-lg" />
+          <!-- <img ref="image" v-if="!cropSelected" :src="image" alt="Processed image" class="mt-4 rounded-lg shadow-lg" /> -->
+          <img v-if="!cropSelected" :src="image" alt="Processed image" class="mt-4 rounded-lg shadow-lg" />
         </div>
         <div v-show="showDetails"
           class="fixed md:prose-md lg:prose-md prose-sm dark:prose-invert sm:prose-sm xl:prose-lg dark:prose-invert inset-0 z-50 overflow-auto bg-smoke-light flex">
