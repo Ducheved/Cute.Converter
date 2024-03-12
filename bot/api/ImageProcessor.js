@@ -17,7 +17,6 @@ class ImageProcessor {
       ? `${apiServer}/api/v1/svg/process?format=${this.format}`
       : `${apiServer}/api/v1/images/process?format=${this.format}`;
 
-    // Добавляем параметры optimize и quality, если они не пустые
     if (this.optimize !== undefined && this.optimize !== null) {
       url += `&optimize=${this.optimize}`;
     }

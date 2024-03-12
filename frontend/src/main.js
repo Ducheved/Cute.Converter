@@ -11,7 +11,7 @@ import { faUserSecret, faTree, faUser, faHeart, faFileImport, faPlus, faRulerCom
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL;
+axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:33250';
 
 const app = createApp(App);
 library.add(faUserSecret, faUser, faTree, faHeart, faGithub, faFileImport, faPlus, faRulerCombined, faImage, faClock, faCalendarAlt, faExpand);

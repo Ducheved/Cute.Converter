@@ -31,7 +31,7 @@ const menuExpandClass = computed(() => ({
   <div
     class="bg-gradient-to-r from-pink-100 via-pink-200 to-pink-300 dark:bg-gradient-to-r dark:from-purple-700 dark:via-purple-800 dark:to-purple-900">
     <div class="container mt-6 sm:mt-6 md:mb-0 mb-6 sm:md-6 md:mb-0 mx-auto">
-      <div class="inline-block text-xs sm:text-xs md:text-lg   dark-mode-switch-container ">
+      <div class="inline-block text-md sm:text-md md:text-lg   dark-mode-switch-container ">
         <transition name="slide" @before-enter="beforeEnter" @after-leave="afterLeave">
           <div
             class="inline-block z-1000 rounded-tl-lg bg-fuchsia-950 p-2 font-sans text-white shadow-lg dark:bg-rose-300 dark:text-gray-800"

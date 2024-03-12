@@ -32,6 +32,7 @@ export async function submitForm(selectedFile, format, optimize, quality, height
         'Content-Type': 'multipart/form-data',
       },
       responseType: 'arraybuffer',
+      timeout: 120000,
     });
 
     let binary = '';
@@ -55,7 +56,17 @@ export async function submitForm(selectedFile, format, optimize, quality, height
 
     return { image, decodedJson };
   } catch (error) {
-    console.error('Error processing image data:', error);
+    if (error.code === 'ECONNABORTED') {
+      console.error('Request timed out:', error);
+    } else if (error.response) {
+      console.error('Server responded with an error:', error.response.status);
+      console.error('Error data:', error.response.data);
+    } else if (error.request) {
+      console.error('No response received:', error.request);
+    } else {
+      console.error('Error setting up the request:', error.message);
+    }
+    console.error('Error config:', error.config);
   }
 }
 
