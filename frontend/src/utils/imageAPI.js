@@ -1,9 +1,20 @@
 import axios from 'axios';
 
-export async function submitForm(selectedFile, format, optimize, quality, height, width, onUploadProgress) {
+export async function submitFormAPI(
+  selectedFile,
+  format,
+  optimize,
+  quality,
+  height,
+  width,
+  onUploadProgress,
+) {
   const formData = new FormData();
   formData.append('file', selectedFile);
-  let endpoint = selectedFile.type === 'image/svg+xml' ? '/api/v1/svg/process' : '/api/v1/images/process';
+  let endpoint =
+    selectedFile.type === 'image/svg+xml'
+      ? '/api/v1/svg/process'
+      : '/api/v1/images/process';
 
   let params = {
     format,
@@ -65,9 +76,98 @@ export async function submitForm(selectedFile, format, optimize, quality, height
   }
 }
 
+export async function submitForm(context) {
+  if (context.cropSelected && !context.croppedImage) {
+    await context.cropImage();
+  }
+  if (!context.selectedFile) {
+    context.errorModal.show = true;
+    context.errorModal.message = 'File not selected';
+    return;
+  }
+  const allowedTypes = [
+    'image/png',
+    'image/jpg',
+    'image/jpeg',
+    'image/webp',
+    'image/svg+xml',
+    'image/tiff',
+    'image/gif',
+    'image/avif',
+  ];
+  if (!allowedTypes.includes(context.selectedFile.type)) {
+    context.errorModal.show = true;
+    context.errorModal.message = 'Invalid file type';
+    return;
+  }
+  context.isLoading = true;
+  let progress = 0;
+  let progressInterval = null;
+  try {
+    progressInterval = setInterval(() => {
+      if (progress < 90) {
+        progress += 10;
+        context.uploadProgress = progress;
+      }
+    }, 1000);
+    if (context.width <= 0 || context.height <= 0) {
+      context.errorModal.show = true;
+      context.errorModal.message = 'Invalid image dimensions';
+      return;
+    }
+    const { image, decodedJson } = await submitFormAPI(
+      context.cropSelected ? context.croppedImage : context.selectedFile,
+      context.format,
+      context.optimize,
+      context.quality,
+      context.height,
+      context.width,
+    );
+    context.image = image;
+    context.decodedJson = decodedJson;
+    context.$nextTick(() => {
+      context.initImagePanzoom();
+    });
+    context.errorModal.show = false;
+    context.errorModal.message = '';
+    context.cropSelected = false;
+  } catch (error) {
+    context.errorModal.show = true;
+    context.errorModal.message = error.message;
+  } finally {
+    clearInterval(progressInterval);
+    context.uploadProgress = 100;
+    setTimeout(() => {
+      context.uploadProgress = 0;
+      context.isLoading = false;
+    }, 2000);
+  }
+}
+
 export function downloadImage(image, format) {
   const link = document.createElement('a');
   link.href = image;
   link.download = 'processed-image.' + format;
   link.click();
+}
+
+export function clearFormFile(context) {
+  context.selectedFile = null;
+  context.image = null;
+  context.decodedJson = null;
+  context.cropSelected = false;
+  context.showCropper = true;
+  context.showDetails = false;
+  context.fileName = '';
+  context.isLoading = false;
+  context.uploadProgress = 0;
+  context.errorModal.show = false;
+  context.errorModal.message = '';
+  context.imageUrl = null;
+  context.croppedImage = null;
+  context.height = null;
+  context.width = null;
+  context.quality = 20;
+  context.format = 'jpeg';
+  context.optimize = true;
 }

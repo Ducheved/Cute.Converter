@@ -25,7 +25,7 @@ export function initImagePanzoom(refs) {
     if (e.touches.length === 2) {
       initialDistance = Math.hypot(
         e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
+        e.touches[0].pageY - e.touches[1].pageY,
       );
     }
   });
@@ -33,7 +33,7 @@ export function initImagePanzoom(refs) {
     if (e.touches.length === 2) {
       const distance = Math.hypot(
         e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
+        e.touches[0].pageY - e.touches[1].pageY,
       );
       const ratio = distance / initialDistance;
       scale = Math.min(Math.max(1, scale * ratio), 3);
@@ -49,8 +49,11 @@ export function zoomImage(img, imgContainer, e) {
 
   const scale = e.deltaY < 0 ? 1.1 : 0.9;
 
-  const transform = img.style.transform === '' ? 'scale(1)' : img.style.transform;
-  const value = parseFloat(transform.substring(transform.indexOf('(') + 1, transform.indexOf(')')));
+  const transform =
+    img.style.transform === '' ? 'scale(1)' : img.style.transform;
+  const value = parseFloat(
+    transform.substring(transform.indexOf('(') + 1, transform.indexOf(')')),
+  );
   const newScale = Math.min(Math.max(1, value * scale), 3);
 
   img.style.transform = `scale(${newScale})`;
@@ -61,4 +64,3 @@ export function resetZoom(refs) {
     refs.image.style.transform = 'scale(1)';
   }
 }
-

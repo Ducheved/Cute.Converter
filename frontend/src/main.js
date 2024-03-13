@@ -7,14 +7,44 @@ import App from './App.vue';
 import router from './router';
 import axios from 'axios';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faExclamationTriangle, faUserSecret, faTree, faUser, faHeart, faFileImport, faPlus, faRulerCombined, faImage, faClock, faCalendarAlt, faExpand } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faExclamationTriangle,
+  faUserSecret,
+  faTree,
+  faUser,
+  faHeart,
+  faFileImport,
+  faPlus,
+  faRulerCombined,
+  faImage,
+  faClock,
+  faCalendarAlt,
+  faExpand,
+} from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:33250';
+axios.defaults.baseURL =
+  import.meta.env.VITE_APP_API_URL || 'http://localhost:33250';
 
 const app = createApp(App);
-library.add(faTrash, faExclamationTriangle, faUserSecret, faUser, faTree, faHeart, faGithub, faFileImport, faPlus, faRulerCombined, faImage, faClock, faCalendarAlt, faExpand);
+library.add(
+  faTrash,
+  faExclamationTriangle,
+  faUserSecret,
+  faUser,
+  faTree,
+  faHeart,
+  faGithub,
+  faFileImport,
+  faPlus,
+  faRulerCombined,
+  faImage,
+  faClock,
+  faCalendarAlt,
+  faExpand,
+);
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 

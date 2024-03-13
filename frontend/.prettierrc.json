@@ -1,15 +1,7 @@
 {
-  "$schema": "https://json.schemastore.org/prettierrc",
   "semi": true,
-  "tabWidth": 2,
+  "trailingComma": "all",
   "singleQuote": true,
-  "printWidth": 300,
-  "trailingComma": "es5",
-  "bracketSpacing": true,
-  "endOfLine": "lf",
-  "proseWrap": "always",
-  "vueIndentScriptAndStyle": true,
-  "plugins": [
-    "prettier-plugin-tailwindcss"
-  ]
+  "printWidth": 80,
+  "tabWidth": 2
 }

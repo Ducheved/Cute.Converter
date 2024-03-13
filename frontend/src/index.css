@@ -180,35 +180,44 @@ input[type='range']::-moz-range-track {
 
 @keyframes slideIn {
   100% {
-    transform: scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(0px) skewX(0deg) skewY(0deg);
+    transform: scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg)
+      rotateZ(0deg) translateX(0px) translateY(0px) translateZ(0px) skewX(0deg)
+      skewY(0deg);
     transform-origin: 100% 100%;
     opacity: 1;
     filter: blur(0);
   }
 
   0% {
-    transform: scaleX(0.9) scaleY(0.9) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(20vw) translateY(0px) translateZ(0px) skewX(30deg) skewY(0deg);
+    transform: scaleX(0.9) scaleY(0.9) scaleZ(1) rotateX(0deg) rotateY(0deg)
+      rotateZ(0deg) translateX(20vw) translateY(0px) translateZ(0px)
+      skewX(30deg) skewY(0deg);
     transform-origin: 100% 100%;
     opacity: 0;
     filter: blur(40px);
   }
 }
 
-
 .slide-out-blurred-right {
-	-webkit-animation: slide-out-blurred-right 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
-	        animation: slide-out-blurred-right 0.45s cubic-bezier(0.755, 0.050, 0.855, 0.060) both;
+  -webkit-animation: slide-out-blurred-right 0.45s
+    cubic-bezier(0.755, 0.05, 0.855, 0.06) both;
+  animation: slide-out-blurred-right 0.45s
+    cubic-bezier(0.755, 0.05, 0.855, 0.06) both;
 }
 @keyframes slideOut {
   0% {
-    transform: scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(0px) translateY(0px) translateZ(0px) skewX(0deg) skewY(0deg);
+    transform: scaleX(1) scaleY(1) scaleZ(1) rotateX(0deg) rotateY(0deg)
+      rotateZ(0deg) translateX(0px) translateY(0px) translateZ(0px) skewX(0deg)
+      skewY(0deg);
     transform-origin: 100% 100%;
     opacity: 1;
     filter: blur(0);
   }
 
   100% {
-    transform: scaleX(0.9) scaleY(0.9) scaleZ(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateX(20vw) translateY(0px) translateZ(0px) skewX(30deg) skewY(0deg);
+    transform: scaleX(0.9) scaleY(0.9) scaleZ(1) rotateX(0deg) rotateY(0deg)
+      rotateZ(0deg) translateX(20vw) translateY(0px) translateZ(0px)
+      skewX(30deg) skewY(0deg);
     transform-origin: 100% 100%;
     opacity: 0;
     filter: blur(40px);
@@ -226,4 +235,56 @@ input[type='range']::-moz-range-track {
 .kittybutt {
   position: relative;
   z-index: 1000;
+}
+
+.image-container.max-h-screen {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.details-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 20px;
+  overflow: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.details-overlay {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
 }

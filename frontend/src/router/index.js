@@ -11,7 +11,7 @@ const router = createRouter({
       component: MainView,
     },
     {
-      path: '/about',
+      path: '/converter',
       name: 'about',
       component: ConverterView,
     },
